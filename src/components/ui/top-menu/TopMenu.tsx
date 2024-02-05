@@ -24,19 +24,19 @@ export const TopMenu = () => {
           className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
           href="/category/men"
         >
-          Men&apos;s
+          Men
         </Link>
         <Link
           className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
-          href="/category/womens"
+          href="/category/women"
         >
-          Women&apos;s
+          Women
         </Link>
         <Link
           className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
-          href="/category/kids"
+          href="/category/kid"
         >
-          Kid&apos;s
+          Kids
         </Link>
       </div>
 
