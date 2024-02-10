@@ -1,10 +1,10 @@
-import Image from 'next/image';
-
 import { ProductGrid, Title } from '@/components';
-import { initialData } from '@/seed/seed';
+import { getPaginatedProductsWithImages } from '@/actions';
 
-const products = initialData.products;
-export default function Home() {
+export default async function Home() {
+  const { products } = await getPaginatedProductsWithImages();
+  console.log(products);
+
   return (
     <>
       <Title title="Store" subtitle="All Products" className="mb-2" />
