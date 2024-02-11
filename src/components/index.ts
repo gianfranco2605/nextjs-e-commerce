@@ -9,6 +9,7 @@ export * from './products/product-grid/ProductGrid';
 export * from './products/product-grid/ProductGridItem';
 
 export * from './product/size-selector/SizeSelector';
-export * from './product/quantity-selector/QuantitySelector';
-export * from './product/slideshow/ProductSlideshow';
-export * from './product/slideshow/ProductMobileSlideshow';
+
+export { ProductSlideshow } from './product/slideshow/ProductSlideshow';
+export { ProductMobileSlideshow } from './product/slideshow/ProductMobileSlideshow';
+export { QuantitySelector } from './product/quantity-selector/QuantitySelector';
