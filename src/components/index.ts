@@ -12,4 +12,7 @@ export * from './product/size-selector/SizeSelector';
 
 export { ProductSlideshow } from './product/slideshow/ProductSlideshow';
 export { ProductMobileSlideshow } from './product/slideshow/ProductMobileSlideshow';
+
+export * from './product/stock-label/StockLabel';
+
 export { QuantitySelector } from './product/quantity-selector/QuantitySelector';
