@@ -4,7 +4,10 @@ import { inter } from '../config/fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Navas | Shop',
+  title: {
+    template: '%s - Navas | Shop',
+    default: 'Home - Navas | Shop',
+  },
   description: 'A Virtual Store',
 };
 
