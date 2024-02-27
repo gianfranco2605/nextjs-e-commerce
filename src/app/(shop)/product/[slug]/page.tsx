@@ -4,14 +4,12 @@ import { getProductBySlug } from '@/actions';
 import {
   ProductMobileSlideshow,
   ProductSlideshow,
-  QuantitySelector,
-  SizeSelector,
   StockLabel,
 } from '@/components';
 
-import { titleFont } from '@/config/fonts';
 import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
+import AddToCart from './ui/AddToCart';
 
 export async function generateMetadata(
   { params }: Props,
@@ -74,14 +72,7 @@ export default async function ProductPage({ params }: Props) {
       <div className="col-span-1 px-5">
         <StockLabel slug={product.slug} />
 
-        <p className="text-lg mb-5">${product.price} </p>
-        {/* Size Selector */}
-        <SizeSelector
-          selectedSize={product.sizes[0]}
-          availableSizes={product.sizes}
-        />
-        <QuantitySelector quantity={2} />
-        <button className="btn-primary my-5">Add to cart</button>
+        <AddToCart product={product} />
         {/* Description */}
         <h3 className="font-bold text-sm ">Description</h3>
         <h3 className="font-light">{product.description}</h3>
