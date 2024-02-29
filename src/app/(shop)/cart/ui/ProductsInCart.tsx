@@ -8,6 +8,12 @@ import { useEffect, useState } from 'react';
 export const ProductsInCart = () => {
   const [loaded, setLoaded] = useState(false);
 
+  const updateProductQuantity = useCartStore(
+    (state) => state.updateProductQuantity,
+  );
+
+  const removeProduct = useCartStore((state) => state.removeProduct);
+
   const productsInCart = useCartStore((state) => state.cart);
 
   useEffect(() => {
@@ -38,10 +44,17 @@ export const ProductsInCart = () => {
             </Link>
             <p>${product.price}</p>
             <QuantitySelector
-              quantity={3}
-              onQuantityChange={(value) => console.log(value)}
+              quantity={product.quantity}
+              onQuantityChange={(quantity) =>
+                updateProductQuantity(product, quantity)
+              }
             />
-            <button className="underline mt-3">Remover</button>
+            <button
+              onClick={() => removeProduct(product)}
+              className="underline mt-3"
+            >
+              Remover
+            </button>
           </div>
         </div>
       ))}
