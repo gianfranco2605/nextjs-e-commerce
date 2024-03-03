@@ -2,21 +2,20 @@ import { initialData } from './seed';
 import prisma from '../lib/prisma';
 
 async function main() {
-  //   await prisma.productImage.deleteMany();
-  //   await prisma.product.deleteMany();
-  //   await prisma.category.deleteMany();
+  // 1. Borrar registros previos
+  // await Promise.all( [
+  await prisma.user.deleteMany();
+  await prisma.productImage.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.category.deleteMany();
+  // ]);
 
-  //   Or
-  //   Delete preview data
-  await Promise.all([
-    await prisma.productImage.deleteMany(),
-    await prisma.product.deleteMany(),
-    await prisma.category.deleteMany(),
-  ]);
+  const { categories, products, users } = initialData;
 
-  const { categories, products } = initialData;
+  await prisma.user.createMany({
+    data: users,
+  });
 
-  //Categories
   const categoriesData = categories.map((name) => ({ name }));
 
   await prisma.category.createMany({
@@ -28,21 +27,13 @@ async function main() {
   const categoriesMap = categoriesDB.reduce((map, category) => {
     map[category.name.toLowerCase()] = category.id;
     return map;
-  }, {} as Record<string, string>); // 1string=shirt, 2string=categoryID
+  }, {} as Record<string, string>); //<string=shirt, string=categoryID>
 
-  //Products
-  //   1 product
-  //   const { images, type, ...product1 } = products[0];
-  //   await prisma.product.create({
-  //     data: {
-  //       ...product1,
-  //       categoryId: categoriesMap['shirts'],
-  //     },
-  //   });
+  // Productos
 
-  //   all Products
   products.forEach(async (product) => {
     const { type, images, ...rest } = product;
+
     const dbProduct = await prisma.product.create({
       data: {
         ...rest,
@@ -50,18 +41,22 @@ async function main() {
       },
     });
 
-    //   Images
+    // Images
     const imagesData = images.map((image) => ({
       url: image,
       productId: dbProduct.id,
     }));
+
     await prisma.productImage.createMany({
       data: imagesData,
     });
   });
+
+  console.log('Seed ejecutado correctamente');
 }
 
 (() => {
   if (process.env.NODE_ENV === 'production') return;
+
   main();
 })();
