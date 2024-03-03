@@ -1,5 +1,5 @@
 'use client';
-import { useUiStore } from '@/store';
+import { useUIStore } from '@/store';
 import clsx from 'clsx';
 import Link from 'next/link';
 import {
@@ -15,8 +15,8 @@ import {
 
 export const Sidebar = () => {
   // Zustand
-  const isSideMenuOpen = useUiStore((state) => state.isSideMenuOpen);
-  const closeMenu = useUiStore((state) => state.closeSideMenu);
+  const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
+  const closeMenu = useUIStore((state) => state.closeSideMenu);
 
   return (
     <div>
