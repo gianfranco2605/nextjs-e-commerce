@@ -5,6 +5,8 @@ export * from './ui/title/Title';
 export * from './ui/footer/Footer';
 export * from './ui/pagination/Pagination';
 
+export * from './provider/Provider';
+
 export * from './products/product-grid/ProductGrid';
 export * from './products/product-grid/ProductGridItem';
 
