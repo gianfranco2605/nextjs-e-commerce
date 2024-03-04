@@ -9,13 +9,18 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
-    console.log(Object.fromEntries(formData));
+    await signIn('credentials', {
+      ...Object.fromEntries(formData),
+      redirect: false,
+    });
 
-    await signIn('credentials', Object.fromEntries(formData));
+    return 'Success';
   } catch (error) {
-    // if ((error as Error).message.includes('CredentialsSignin')) {
-    return 'CredentialsSignin';
-    // }
-    // throw error;
+    if ((error as any).type === 'CredentialsSignin') {
+      return 'CredentialsSignin';
+    }
+    console.log(error);
+
+    return 'Unknown Error';
   }
 }
