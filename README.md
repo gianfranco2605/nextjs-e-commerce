@@ -10,4 +10,4 @@
 6. Execute seed `npm run seed`
 7. Run Project `npm run dev`
 
-## Run in Prod
+## Run in Prodd
