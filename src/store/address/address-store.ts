@@ -7,7 +7,7 @@ interface State {
     lastName: string;
     address: string;
     address2?: string;
-    postCode: string;
+    postalCode: string;
     city: string;
     country: string;
     phone: string;

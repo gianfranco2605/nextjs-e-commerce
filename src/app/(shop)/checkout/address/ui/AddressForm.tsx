@@ -1,8 +1,10 @@
 'use client';
 
+import { setUserAddress } from '@/actions';
 import type { Country } from '@/interfaces';
 import { userAdressStore } from '@/store';
 import clsx from 'clsx';
+import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -11,7 +13,7 @@ type FormInput = {
   lastName: string;
   address: string;
   address2?: string;
-  postCode: string;
+  postalCode: string;
   city: string;
   country: string;
   phone: string;
@@ -34,6 +36,10 @@ export const AddressForm = ({ countries }: Props) => {
     },
   });
 
+  const { data: session } = useSession({
+    required: true,
+  });
+
   const setAddress = userAdressStore((state) => state.setAddress);
   const address = userAdressStore((state) => state.address);
 
@@ -44,8 +50,16 @@ export const AddressForm = ({ countries }: Props) => {
   }, []);
 
   const onSubmit = (data: FormInput) => {
-    console.log(data);
     setAddress(data);
+
+    const { rememberAddress, ...restAddress } = data;
+
+    if (data.rememberAddress) {
+      //Todo Server action
+      setUserAddress(restAddress, session!.user.id);
+    } else {
+      // Todo server action
+    }
   };
 
   return (
@@ -94,7 +108,7 @@ export const AddressForm = ({ countries }: Props) => {
         <input
           type="text"
           className="p-2 border rounded-md bg-gray-200"
-          {...register('postCode', { required: true })}
+          {...register('postalCode', { required: true })}
         />
       </div>
 
