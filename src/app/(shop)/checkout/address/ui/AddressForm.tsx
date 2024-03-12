@@ -1,10 +1,11 @@
 'use client';
 
-import { setUserAddress } from '@/actions';
-import type { Country } from '@/interfaces';
+import { deleteUserAddress, setUserAddress } from '@/actions';
+import type { Address, Country } from '@/interfaces';
 import { userAdressStore } from '@/store';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -22,9 +23,13 @@ type FormInput = {
 
 interface Props {
   countries: Country[];
+  // Partial = optional
+  userStoredAddress?: Partial<Address>;
 }
 
-export const AddressForm = ({ countries }: Props) => {
+export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
+  const router = useRouter();
+
   const {
     handleSubmit,
     register,
@@ -33,6 +38,8 @@ export const AddressForm = ({ countries }: Props) => {
   } = useForm<FormInput>({
     defaultValues: {
       //Read DB
+      ...(userStoredAddress as any),
+      rememberAddress: false,
     },
   });
 
@@ -59,7 +66,10 @@ export const AddressForm = ({ countries }: Props) => {
       setUserAddress(restAddress, session!.user.id);
     } else {
       // Todo server action
+      deleteUserAddress(session!.user.id);
     }
+
+    router.push('/checkout');
   };
 
   return (

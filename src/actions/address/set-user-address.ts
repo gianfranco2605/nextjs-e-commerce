@@ -22,8 +22,6 @@ export const setUserAddress = async (address: Address, userId: string) => {
 
 const createReplaceAddress = async (address: Address, userId: string) => {
   try {
-    console.log({ userId });
-
     const storeAddress = await prisma.userAddress.findUnique({
       where: { userId: userId },
     });
@@ -33,6 +31,7 @@ const createReplaceAddress = async (address: Address, userId: string) => {
       address: address.address,
       address2: address.address2,
       countryId: address.country,
+      city: address.city,
       firstName: address.firstName,
       lastName: address.lastName,
       phone: address.phone,
