@@ -34,12 +34,9 @@ export const PlaceOrder = () => {
       size: product.size,
     }));
 
-    console.log({ address, productToOrder });
-
     // await sleep(2);
     // Server action
     const resp = await placeOrder(productToOrder, address);
-    console.log({ resp });
 
     setIsPlacingOrder(false);
   };
