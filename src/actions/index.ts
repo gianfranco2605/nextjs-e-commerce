@@ -12,6 +12,9 @@ export * from './auth/register';
 
 export * from './country/get-country';
 
+export * from './payments/set-transactions';
+export * from './payments/paypal-payment';
+
 export * from './product/product-pagination';
 export * from './product/get-stock-by-slug';
 export * from './product/get-product-by-slug';
