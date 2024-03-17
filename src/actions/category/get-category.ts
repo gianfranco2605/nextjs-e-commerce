@@ -1,8 +1,8 @@
-'user server';
+'use server';
 
 import prisma from '@/lib/prisma';
 
-export const getCategories = () => {
+export const getCategories = async () => {
   try {
     const categories = await prisma.category.findMany({
       orderBy: {
