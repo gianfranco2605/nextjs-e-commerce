@@ -55,7 +55,7 @@ export const PlaceOrder = () => {
   };
 
   if (!loaded) {
-    return <p>Cargando...</p>;
+    return <p>Loading...</p>;
   }
 
   return (
