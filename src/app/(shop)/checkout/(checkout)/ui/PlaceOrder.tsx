@@ -46,11 +46,9 @@ export const PlaceOrder = () => {
 
     //* Todo salio bien!
     clearCart();
+    console.log(resp.order);
     if (resp.order && resp.order.length > 0) {
       router.replace('/orders/' + resp.order[0].id);
-    } else {
-      // Handle the case where resp.order is undefined or empty
-      router.replace('/no-orders');
     }
   };
 
@@ -60,7 +58,7 @@ export const PlaceOrder = () => {
 
   return (
     <div className="bg-white rounded-xl shadow-xl p-7">
-      <h2 className="text-2xl mb-2">Dirección de entrega</h2>
+      <h2 className="text-2xl mb-2">Shipping address</h2>
       <div className="mb-10">
         <p className="text-xl">
           {address.firstName} {address.lastName}
@@ -77,18 +75,18 @@ export const PlaceOrder = () => {
       {/* Divider */}
       <div className="w-full h-0.5 rounded bg-gray-200 mb-10" />
 
-      <h2 className="text-2xl mb-2">Resumen de orden</h2>
+      <h2 className="text-2xl mb-2">Order preview</h2>
 
       <div className="grid grid-cols-2">
-        <span>No. Productos</span>
+        <span>No. Products</span>
         <span className="text-right">
-          {itemsInCart === 1 ? '1 artículo' : `${itemsInCart} artículos`}
+          {itemsInCart === 1 ? '1 article' : `${itemsInCart} articles`}
         </span>
 
-        <span>Subtotal</span>
+        <span>Sub-total</span>
         <span className="text-right">{currencyFormat(subTotal)}</span>
 
-        <span>Impuestos (15%)</span>
+        <span>Tax (15%)</span>
         <span className="text-right">{currencyFormat(tax)}</span>
 
         <span className="mt-5 text-2xl">Total:</span>
@@ -103,11 +101,11 @@ export const PlaceOrder = () => {
           <span className="text-xs">
             Al hacer clic en &quot;Colocar orden&quot;, aceptas nuestros{' '}
             <a href="#" className="underline">
-              términos y condiciones
+              terms and conditions
             </a>{' '}
             y{' '}
             <a href="#" className="underline">
-              política de privacidad
+              Privacy policy
             </a>
           </span>
         </p>
@@ -122,7 +120,7 @@ export const PlaceOrder = () => {
             'btn-disabled': isPlacingOrder,
           })}
         >
-          Colocar orden
+          Place Order
         </button>
       </div>
     </div>

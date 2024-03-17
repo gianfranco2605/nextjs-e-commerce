@@ -12,6 +12,8 @@ export * from './paypal/PaypalButton';
 export * from './products/product-grid/ProductGrid';
 export * from './products/product-grid/ProductGridItem';
 
+export * from './orders/OrderStatus';
+
 export * from './product/size-selector/SizeSelector';
 
 export { ProductSlideshow } from './product/slideshow/ProductSlideshow';

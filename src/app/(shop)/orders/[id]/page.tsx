@@ -1,10 +1,10 @@
 import { PayPalButton, Title } from '@/components';
 import Image from 'next/image';
-import clsx from 'clsx';
-import { IoCardOutline } from 'react-icons/io5';
+
 import { getOrderById } from '@/actions/order/get-order-by-id';
 import { redirect } from 'next/navigation';
 import { currencyFormat } from '@/utils';
+import OrderStatus from '@/components/orders/OrderStatus';
 
 interface Props {
   params: {
@@ -33,17 +33,7 @@ export default async function OrderByIdPage({ params }: Props) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
           {/* Cart */}
-          <div
-            className={clsx(
-              'flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5',
-              { 'bg-red-500': !order!.isPaid, 'bg-green-700': order!.isPaid },
-            )}
-          >
-            <IoCardOutline size={30} />
-            {/* <span className="mx-2">Pending</span> */}
-            <span className="mx-2">{order?.isPaid ? 'Paid' : 'To Paid'}</span>
-          </div>
-
+          <OrderStatus isPaid={order?.isPaid ?? false} />
           {/* Items */}
           {order!.OrderItem.map((item) => (
             <div
@@ -91,7 +81,7 @@ export default async function OrderByIdPage({ params }: Props) {
           <h2 className="text-2xl mb-2">Order</h2>
 
           <div className="grid grid-cols-2">
-            <span>No. Productos</span>
+            <span>No. Products</span>
             <span className="text-right">
               {order?.itemsInOrder === 1
                 ? '1 artículo'
@@ -112,7 +102,11 @@ export default async function OrderByIdPage({ params }: Props) {
             </span>
           </div>
           <div className="mt-5 mb-2 w-full">
-            <PayPalButton amount={order!.total} orderId={order!.id} />
+            {order?.isPaid ? (
+              <OrderStatus isPaid={order?.isPaid ?? false} />
+            ) : (
+              <PayPalButton amount={order!.total} orderId={order!.id} />
+            )}
           </div>
         </div>
       </div>
