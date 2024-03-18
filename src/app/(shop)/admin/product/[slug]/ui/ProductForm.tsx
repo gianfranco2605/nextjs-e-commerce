@@ -1,13 +1,20 @@
 'use client';
 
-import { Category, Product, ProductImage } from '@/interfaces';
+import { createUpdateProduct, deleteProductImage } from '@/actions';
+import { ProductImage } from '@/components';
+import {
+  Category,
+  Product,
+  ProductImage as ProductWithImage,
+} from '@/interfaces';
 import clsx from 'clsx';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { useForm } from 'react-hook-form';
 
 interface Props {
-  product: Product & { ProductImage?: ProductImage[] };
+  product: Partial<Product> & { ProductImage?: ProductWithImage[] };
   categories: Category[];
 }
 
@@ -25,9 +32,12 @@ interface FormInputs {
   categoryId: string;
 
   //todo images
+  images?: FileList;
 }
 
 export const ProductForm = ({ product, categories }: Props) => {
+  const router = useRouter();
+
   const {
     handleSubmit,
     register,
@@ -38,8 +48,10 @@ export const ProductForm = ({ product, categories }: Props) => {
   } = useForm<FormInputs>({
     defaultValues: {
       ...product,
-      tags: product.tags.join(', '),
+      tags: product.tags?.join(', '),
       sizes: product.sizes ?? [],
+
+      images: undefined,
     },
   });
 
@@ -54,7 +66,36 @@ export const ProductForm = ({ product, categories }: Props) => {
   };
 
   const onSubmit = async (data: FormInputs) => {
-    console.log({ data });
+    const formData = new FormData();
+
+    const { images, ...productToSave } = data;
+
+    if (product.id) {
+      formData.append('id', product.id ?? '');
+    }
+    formData.append('title', productToSave.title);
+    formData.append('slug', productToSave.slug);
+    formData.append('description', productToSave.description);
+    formData.append('price', productToSave.price.toString());
+    formData.append('inStock', productToSave.inStock.toString());
+    formData.append('sizes', productToSave.sizes.toString());
+    formData.append('tags', productToSave.tags);
+    formData.append('categoryId', productToSave.categoryId);
+    formData.append('gender', productToSave.gender);
+
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append('images', images[i]);
+      }
+    }
+    const { product: updatedProduct, ok } = await createUpdateProduct(formData);
+
+    if (!ok) {
+      alert('Product Update Failed');
+      return;
+    }
+
+    router.replace(`/admin/product/${updatedProduct?.slug}`);
   };
 
   return (
@@ -143,6 +184,14 @@ export const ProductForm = ({ product, categories }: Props) => {
 
       {/* Selector de tallas y fotos */}
       <div className="w-full">
+        <div className="flex flex-col mb-2">
+          <span>Stock</span>
+          <input
+            type="number"
+            className="p-2 border rounded-md bg-gray-200"
+            {...register('inStock', { required: true, min: 0 })}
+          />
+        </div>
         {/* As checkboxes */}
         <div className="flex flex-col">
           <span>Sizes</span>
@@ -168,28 +217,29 @@ export const ProductForm = ({ product, categories }: Props) => {
             <span>Images</span>
             <input
               type="file"
+              {...register('images')}
               multiple
               className="p-2 border rounded-md bg-gray-200"
-              accept="image/png, image/jpeg"
+              accept="image/png, image/jpeg, image/avif"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {product.ProductImage?.map((image) => (
               <div key={image.id}>
-                <Image
+                <ProductImage
                   alt={product.title ?? ''}
-                  src={`/products/${image.url}`}
+                  src={image.url}
                   width={300}
                   height={300}
                   className="shadow-md rounded"
                 />
                 <button
-                  onClick={() => console.log(image.id, image.url)}
+                  onClick={() => deleteProductImage(image.id, image.url)}
                   type="button"
                   className="btn-cancel mt-5"
                 >
-                  Eliminate{' '}
+                  Delete
                 </button>
               </div>
             ))}

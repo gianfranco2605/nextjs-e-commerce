@@ -2,7 +2,6 @@ import { getCategories, getProductBySlug } from '@/actions';
 import { Title } from '@/components';
 import { redirect } from 'next/navigation';
 import { ProductForm } from './ui/ProductForm';
-import { Category } from '@/interfaces';
 
 interface Props {
   params: {
@@ -17,7 +16,7 @@ export default async function ProductPage({ params }: Props) {
     getCategories(),
   ]);
 
-  if (!product) {
+  if (!product && slug !== 'new') {
     redirect('/admin/products');
   }
 
@@ -26,7 +25,7 @@ export default async function ProductPage({ params }: Props) {
   return (
     <>
       <Title title={title} />
-      <ProductForm product={product} categories={categories} />
+      <ProductForm product={product ?? {}} categories={categories} />
     </>
   );
 }
