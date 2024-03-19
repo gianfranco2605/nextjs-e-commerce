@@ -37,6 +37,7 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
       purchase_units: [
         {
           invoice_id: orderId,
+          //@ts-ignore
           amount: {
             value: `${roundedAmount}`,
           },

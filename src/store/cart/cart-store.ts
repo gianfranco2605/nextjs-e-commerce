@@ -88,16 +88,20 @@ export const useCartStore = create<State>()(
 
       removeProduct: (product: CartProduct) => {
         const { cart } = get();
+        const updatedCartProducts = cart.filter(
+          (item) => item.id !== product.id || item.size !== product.size,
+        );
 
-        const updatedCartProducts = cart.filter((item) => {
-          item.id !== product.id || item.size !== product.size;
-        });
         set({ cart: updatedCartProducts });
       },
+
       clearCart: () => {
         set({ cart: [] });
       },
     }),
-    { name: 'shopping-cart' },
+
+    {
+      name: 'shopping-cart',
+    },
   ),
 );
